@@ -43,3 +43,50 @@ consume:
 	--topic $(TOPIC) \
 	--from-beginning \
 	--bootstrap-server kafka:9092
+
+# -----------------------------
+# DOCKER
+# -----------------------------
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down
+
+restart: down up
+
+logs:
+	docker-compose logs -f
+
+# -----------------------------
+# SPARK
+# -----------------------------
+spark-shell:
+	docker exec -it $(SPARK_CONTAINER) pyspark
+
+spark-bash:
+	docker exec -it $(SPARK_CONTAINER) bash
+
+run-job:
+	docker exec -it $(SPARK_CONTAINER) spark-submit /home/iceberg/jobs/kafka_to_iceberg.py
+
+# -----------------------------
+# PRODUCER (LOCAL PYTHON)
+# -----------------------------
+run-producer:
+	python producer/producer.py
+
+# -----------------------------
+# DEBUG
+# -----------------------------
+check-kafka:
+	docker exec -it $(KAFKA_CONTAINER) bash
+
+check-spark:
+	docker exec -it $(SPARK_CONTAINER) bash
+
+network:
+	docker network ls
+
+ps:
+	docker ps
