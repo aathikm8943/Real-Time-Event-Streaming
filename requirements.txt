@@ -1,3 +1,5 @@
 pandas 
 pyarrow
 kafka-python
+s3fs
+boto3
