@@ -8,6 +8,7 @@ PYTHON_BIN=.venv/Scripts/python.exe
 
 # Disable Git Bash path conversion
 DOCKER_EXEC=MSYS_NO_PATHCONV=1 docker exec -it $(KAFKA_CONTAINER)
+SPARK_CONTAINER=spark-iceberg
 
 # -----------------------------
 # KAFKA COMMANDS
@@ -73,7 +74,10 @@ spark-bash:
 	docker exec -it $(SPARK_CONTAINER) bash
 
 run-job:
-	docker exec -it $(SPARK_CONTAINER) spark-submit /home/iceberg/jobs/kafka_to_iceberg.py
+	docker exec -it $(SPARK_CONTAINER) /opt/spark/bin/spark-submit /home/iceberg/notebooks/notebooks/${FILE_NAME}
+
+run-init:
+	docker exec -it spark-iceberg /opt/spark/bin/spark-submit /home/iceberg/notebooks/notebooks/create_table.py
 
 # -----------------------------
 # PRODUCER (LOCAL PYTHON)
@@ -148,3 +152,8 @@ ps:
 #   make create-topic            - Create topic
 #   make consume-live TOPIC=xxx  - Consume messages (docker)
 # =====================================================
+
+test-spark-job:
+	docker exec -it spark-iceberg /opt/spark/bin/spark-submit \
+	--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+	/home/iceberg/notebooks/notebooks/kafka_to_spark_analytics.py

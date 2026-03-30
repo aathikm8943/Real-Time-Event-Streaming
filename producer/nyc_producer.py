@@ -26,7 +26,7 @@ df = pd.read_parquet(
 
 print("Loaded rows:", len(df))
 
-processing_df = df[:10]  # limit to 10 rows for testing
+processing_df = df[:10000]  # limit to 10000 rows for testing
 print("Processing rows:", len(processing_df))
 
 # Kafka producer
