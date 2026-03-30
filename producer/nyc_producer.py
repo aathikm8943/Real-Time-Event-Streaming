@@ -1,6 +1,6 @@
 import pandas as pd
 import s3fs
-from kafka import KafkaProducer
+from kafka import KafkaProducer, future
 import json
 import time
 
@@ -26,7 +26,7 @@ df = pd.read_parquet(
 
 print("Loaded rows:", len(df))
 
-processing_df = df[:10]  # limit to 10 rows for testing
+processing_df = df[:10000]  # limit to 10000 rows for testing
 print("Processing rows:", len(processing_df))
 
 # Kafka producer
@@ -49,7 +49,9 @@ for _, row in processing_df.iterrows():
         if hasattr(v, 'isoformat'):
             data[k] = v.isoformat()
 
-    producer.send("events_raw", data)
+    future = producer.send("events_raw1", data)
     print("Sent:", data)
+    result = future.get(timeout=10)
+    print("Sent to partition:", result.partition)
 
     time.sleep(0.1)  # simulate streaming
