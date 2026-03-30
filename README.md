@@ -578,7 +578,7 @@ This project is licensed under the MIT License - see LICENSE file for details.
 
 <div align="center">
 
-**Made with ❤️ for Real-Time Data Streaming**
+**Made with for Real-Time Data Streaming**
 
 [⬆ Back to Top](#-real-time-nyc-taxi-analytics-pipeline)
 
